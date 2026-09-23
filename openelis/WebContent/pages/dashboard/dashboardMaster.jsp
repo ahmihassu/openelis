@@ -122,6 +122,7 @@ basePath = path + "/";
         data-completed = '<bean:message key="dashboard.sample.column.completed"/>'
         data-printed = '<bean:message key="dashboard.sample.column.printed"/>'
         data-link-collectSample = '<bean:message key="dashboard.sample.column.link.collectSample"/>'
+        data-link-collectSample-unpaid = '<bean:message key="dashboard.sample.column.link.collectSample.unpaid"/>'
         data-link-result = '<bean:message key="dashboard.sample.column.link.result"/>'
         data-link-validate = '<bean:message key="dashboard.sample.column.link.validate"/>'
         data-link-print = '<bean:message key="dashboard.sample.column.link.print"/>'

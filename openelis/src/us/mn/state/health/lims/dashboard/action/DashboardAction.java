@@ -22,15 +22,21 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 import org.bahmni.feed.openelis.ObjectMapperRepository;
+import org.bahmni.feed.openelis.odoo.LabOrderPaymentService;
+import org.bahmni.feed.openelis.odoo.LabOrderPaymentStatus;
 import us.mn.state.health.lims.common.action.BaseAction;
 import us.mn.state.health.lims.dashboard.dao.OrderListDAO;
 import us.mn.state.health.lims.dashboard.daoimpl.OrderListDAOImpl;
+import us.mn.state.health.lims.dashboard.valueholder.Order;
 import us.mn.state.health.lims.siteinformation.daoimpl.SiteInformationDAOImpl;
 import us.mn.state.health.lims.siteinformation.valueholder.SiteInformation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class DashboardAction extends BaseAction {
     private static final String GROUP_BY_SAMPLE = "groupBySample";
@@ -48,9 +54,13 @@ public class DashboardAction extends BaseAction {
         Boolean isGroupBySample = GROUP_BY_SAMPLE.equals(accessionStrategy);
         OrderListDAO orderListDAO = new OrderListDAOImpl(isGroupBySample);
 
+        List<Order> todaySampleNotCollected = orderListDAO.getAllSampleNotCollectedToday();
+        List<Order> backlogSampleNotCollected = orderListDAO.getAllSampleNotCollectedPendingBeforeToday();
+        enrichPaymentStatus(todaySampleNotCollected, backlogSampleNotCollected);
+
         String escapedTodayOrderListJson = asJson(orderListDAO.getAllToday());
-        String escapedTodaySampleNotCollectedListJson = asJson(orderListDAO.getAllSampleNotCollectedToday());
-        String escapedBacklogSampleNotCollectedListJson = asJson(orderListDAO.getAllSampleNotCollectedPendingBeforeToday());
+        String escapedTodaySampleNotCollectedListJson = asJson(todaySampleNotCollected);
+        String escapedBacklogSampleNotCollectedListJson = asJson(backlogSampleNotCollected);
         String escapedBacklogOrderListJson = asJson(orderListDAO.getAllPendingBeforeToday());
 
         dynaForm.set("todayOrderList", escapedTodayOrderListJson);
@@ -60,6 +70,37 @@ public class DashboardAction extends BaseAction {
         dynaForm.set("isGroupBySample", isGroupBySample);
 
         return mapping.findForward("success");
+    }
+
+    private void enrichPaymentStatus(List<Order>... sampleNotCollectedLists) {
+        List<String> uuids = new ArrayList<String>();
+        for (List<Order> orders : sampleNotCollectedLists) {
+            if (orders == null) {
+                continue;
+            }
+            for (Order order : orders) {
+                if (order.getUuid() != null) {
+                    uuids.add(order.getUuid());
+                }
+            }
+        }
+        if (uuids.isEmpty()) {
+            return;
+        }
+        Map<String, LabOrderPaymentStatus> statusByUuid = LabOrderPaymentService.getInstance().checkByEncounterUuids(uuids);
+        for (List<Order> orders : sampleNotCollectedLists) {
+            if (orders == null) {
+                continue;
+            }
+            for (Order order : orders) {
+                LabOrderPaymentStatus status = statusByUuid.get(order.getUuid());
+                if (status == null) {
+                    continue;
+                }
+                order.setPaymentCollectAllowed(status.isCollectAllowed());
+                order.setPaymentMessage(status.getMessage());
+            }
+        }
     }
 
     @Override
