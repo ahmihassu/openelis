@@ -26,3 +26,12 @@ openmrs.connectionTimeoutInMilliseconds=10000
 openmrs.replyTimeoutInMilliseconds=20000
 productType.labTest=Test
 productType.panel=Panel
+
+# Odoo lab-order payment gate (EMR sample collection). Set enforce to true and supply Odoo credentials to enable.
+enforce.lab.order.payment=false
+odoo.host=${ODOO_HOST}
+odoo.port=${ODOO_PORT}
+odoo.database=${ODOO_DATABASE}
+odoo.user=${ODOO_USER}
+odoo.password=${ODOO_PASSWORD}
+odoo.lab.shop.name=Laboratory

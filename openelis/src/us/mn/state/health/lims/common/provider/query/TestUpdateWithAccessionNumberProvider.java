@@ -1,7 +1,10 @@
 package us.mn.state.health.lims.common.provider.query;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.bahmni.feed.openelis.feed.service.EventPublishers;
 import org.bahmni.feed.openelis.feed.service.impl.OpenElisUrlPublisher;
+import org.bahmni.feed.openelis.odoo.LabOrderPaymentService;
+import org.bahmni.feed.openelis.odoo.LabOrderPaymentStatus;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -38,6 +41,7 @@ public class TestUpdateWithAccessionNumberProvider extends BaseQueryProvider {
     private TypeOfSampleDAO typeOfSampleDAO = new TypeOfSampleDAOImpl();
     private TestDAO testDAO = new TestDAOImpl();
     private OpenElisUrlPublisher accessionPublisher = new EventPublishers().accessionPublisher();
+    private LabOrderPaymentService labOrderPaymentService = LabOrderPaymentService.getInstance();
 
     @Override
     public void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,6 +49,20 @@ public class TestUpdateWithAccessionNumberProvider extends BaseQueryProvider {
         String sampleId = request.getParameter("sampleId");
 
         Sample sample = sampleDao.getSampleByID(sampleId);
+        if (sample == null) {
+            ajaxServlet.sendData("Sample not found", INVALID, request, response);
+            return;
+        }
+
+        LabOrderPaymentStatus paymentStatus = labOrderPaymentService.checkByEncounterUuid(sample.getUUID());
+        if (!paymentStatus.isCollectAllowed()) {
+            String message = paymentStatus.getMessage() != null
+                    ? paymentStatus.getMessage()
+                    : "Sample collection blocked: payment incomplete for lab order";
+            ajaxServlet.sendData(StringEscapeUtils.escapeXml(message), INVALID, request, response);
+            return;
+        }
+
         String datePattern = ResourceLocator.getInstance().getMessageResources().getMessage( "date.format.formatKey");
         if(!StringUtil.isNullorNill(datePattern) && !StringUtil.isNullorNill(request.getParameter("collectionDate")))
         {

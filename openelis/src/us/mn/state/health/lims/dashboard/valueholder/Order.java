@@ -47,6 +47,8 @@ public class Order {
     private String sectionNames;
     private String sampleType;
     private String priority;
+    private boolean paymentCollectAllowed = true;
+    private String paymentMessage;
 
     public Order() {
     }
@@ -283,5 +285,21 @@ public class Order {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public boolean getPaymentCollectAllowed() {
+        return paymentCollectAllowed;
+    }
+
+    public void setPaymentCollectAllowed(boolean paymentCollectAllowed) {
+        this.paymentCollectAllowed = paymentCollectAllowed;
+    }
+
+    public String getPaymentMessage() {
+        return paymentMessage;
+    }
+
+    public void setPaymentMessage(String paymentMessage) {
+        this.paymentMessage = paymentMessage;
     }
 }

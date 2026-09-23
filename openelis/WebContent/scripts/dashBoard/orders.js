@@ -44,6 +44,12 @@ function generateLinkForPrint(order){
 function generateAllLinksForOrder(order, alwaysValidate){
     if(order.accessionNumber == null){
         var linkSample = jQuery("#translatedColumnNames").attr("data-link-collectSample");
+        if(order.paymentCollectAllowed === false){
+            var unpaidLabel = jQuery("#translatedColumnNames").attr("data-link-collectSample-unpaid") || "Payment required";
+            var paymentMessage = order.paymentMessage || unpaidLabel;
+            var safeTitle = String(paymentMessage).replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+            return "<span class='collect-disabled' title=\"" + safeTitle + "\" style=\"color:#888;cursor:not-allowed;text-decoration:line-through;\">" + unpaidLabel + "</span>";
+        }
         return  "<a href='SamplePatientEntry.do?id="+ order.orderId +"&patientId=" + order.stNumber + "'>"+linkSample+"</a>";
     }
     var resultMessage = jQuery("#translatedColumnNames").attr("data-link-result");

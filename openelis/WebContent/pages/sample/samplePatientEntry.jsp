@@ -211,7 +211,16 @@ function  /*void*/ processValidateEntryDateSuccess(xhr){
 
 function successUpdateAccession(xhr)
 {
-
+	var messageNode = xhr.responseXML.getElementsByTagName("message").item(0);
+	var message = messageNode && messageNode.firstChild ? messageNode.firstChild.nodeValue : "";
+	if (message != "valid") {
+		var fieldNode = xhr.responseXML.getElementsByTagName("formfield").item(0);
+		var detail = fieldNode && fieldNode.firstChild ? fieldNode.firstChild.nodeValue : "Sample collection blocked due to payment status";
+		alert(detail);
+		jQuery("#saveButtonId").removeAttr("disabled");
+		return;
+	}
+	window.location = "LabDashboard.do";
 }
 
 function checkValidEntryDate(date, dateRange)
@@ -425,7 +434,8 @@ function processScanSuccess(xhr){
 }
 
 function processScanFailure(xhr){
-	//some user friendly response needs to be given to the user
+	alert("Sample collection failed. Please try again or check payment status.");
+	jQuery("#saveButtonId").removeAttr("disabled");
 }
 
 function addPatientInfo(  ){
@@ -565,8 +575,8 @@ function  /*void*/ savePage()
 		testsAndTypes.types = typeIdsSelected;
 		var typeAndTestIdsJson = JSON.stringify(testsAndTypes);
 
-		updateTestsWithAccessionNumber(accessionNumber, sampleId, collectionDate,typeAndTestIdsJson, successUpdateAccession, processScanFailure)
-		form.action = "LabDashboard.do?";
+		updateTestsWithAccessionNumber(accessionNumber, sampleId, collectionDate,typeAndTestIdsJson, successUpdateAccession, processScanFailure);
+		return;
 	}else {
 		form.action = "SamplePatientEntrySave.do";
 	}
