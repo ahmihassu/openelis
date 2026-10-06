@@ -60,7 +60,7 @@
         <property name="soClientReference" type="java.lang.String">
             <column name="SO_CLIENT_REFERENCE" length="240" />
         </property>
-        <property name="soNotifyReceivedDate" type="java.sql.Date">
+        <property name="soNotifyReceivedDate" type="java.sql.Timestamp">
             <column name="SO_NOTIFY_RECEIVED_DATE" length="7" />
         </property>
         <property name="soNotifySendDate" type="java.sql.Date">

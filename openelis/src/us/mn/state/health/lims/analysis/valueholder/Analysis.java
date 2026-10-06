@@ -66,7 +66,7 @@ public class Analysis extends BaseObject {
     private Date soSendReadyDate = null;
     private String soSendReadyDateForDisplay = null;
     private String soClientReference;
-    private Date soNotifyReceivedDate = null;
+    private Timestamp soNotifyReceivedDate = null;
     private String soNotifyReceivedDateForDisplay = null;
     private Date soNotifySendDate = null;
     private String soNotifySendDateForDisplay = null;
@@ -272,17 +272,14 @@ public class Analysis extends BaseObject {
         this.soClientReference = soClientReference;
     }
 
-    public Date getSoNotifyReceivedDate() {
+    public Timestamp getSoNotifyReceivedDate() {
         return soNotifyReceivedDate;
     }
 
-    public void setSoNotifyReceivedDate(Date soNotifyReceivedDate) {
+    public void setSoNotifyReceivedDate(Timestamp soNotifyReceivedDate) {
         this.soNotifyReceivedDate = soNotifyReceivedDate;
-        // also update String date
-        String locale = SystemConfiguration.getInstance().getDefaultLocale()
-                .toString();
-        this.soNotifyReceivedDateForDisplay = DateUtil
-                .convertSqlDateToStringDate(soNotifyReceivedDate, locale);
+        // also update String date-time for TAT reporting
+        this.soNotifyReceivedDateForDisplay = DateUtil.formatDateTimeAsText(soNotifyReceivedDate);
     }
 
     public String getSoNotifyReceivedDateForDisplay() {
@@ -292,10 +289,10 @@ public class Analysis extends BaseObject {
     public void setSoNotifyReceivedDateForDisplay(
             String soNotifyReceivedDateForDisplay) {
         this.soNotifyReceivedDateForDisplay = soNotifyReceivedDateForDisplay;
-        // also update the java.sql.Date
+        // also update the java.sql.Timestamp
         String locale = SystemConfiguration.getInstance().getDefaultLocale()
                 .toString();
-        this.soNotifyReceivedDate = DateUtil.convertStringDateToSqlDate(
+        this.soNotifyReceivedDate = DateUtil.convertStringDateToTimestamp(
                 this.soNotifyReceivedDateForDisplay, locale);
     }
 

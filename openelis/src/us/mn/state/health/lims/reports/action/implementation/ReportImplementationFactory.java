@@ -81,6 +81,8 @@ public class ReportImplementationFactory {
             	return new RetroCIPatientCollectionReport();
             } else if( report.equals("patientAssociated")){
             	return new RetroCIPatientAssociatedReport();
+            } else if (report.equals("patientTAT")) {
+                return new PatientTAT();
             }
 		}
 
@@ -169,6 +171,8 @@ public class ReportImplementationFactory {
             	return new RetroCIPatientAssociatedReport();
             } else if (report.equals("indicatorCDILNSPHIV")){
 				return new IndicatorCDIHIVLNSP();
+            } else if (report.equals("patientTAT")) {
+                return new PatientTAT();
             }
 		}
 

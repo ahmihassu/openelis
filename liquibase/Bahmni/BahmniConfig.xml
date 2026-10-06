@@ -1857,5 +1857,40 @@
         </update>
     </changeSet>
 
+    <changeSet id="wachemo-tat-so-notify-received-timestamp" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <columnExists schemaName="clinlims" tableName="analysis" columnName="so_notify_received_date"/>
+        </preConditions>
+        <comment>Store validation datetime for TAT report (time component required)</comment>
+        <sql>
+            ALTER TABLE clinlims.analysis
+            ALTER COLUMN so_notify_received_date TYPE timestamp without time zone
+            USING so_notify_received_date::timestamp without time zone;
+        </sql>
+    </changeSet>
+
+    <changeSet id="wachemo-tat-report-menu" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_reports_status_tat'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_reports_status'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add TAT Report under Status Reports menu</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_reports_status' ) "/>
+            <column name="presentation_order" valueNumeric="2"/>
+            <column name="element_id" value="menu_reports_status_tat"/>
+            <column name="action_url"
+                    value="/Report.do?type=patient&amp;report=patientTAT"/>
+            <column name="display_key" value="openreports.TATReport"/>
+            <column name="tool_tip_key" value="openreports.TATReport"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
 

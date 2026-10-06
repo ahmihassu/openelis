@@ -51,6 +51,9 @@ public class DateUtil {
 	}
 
     public static String formatDateTimeAsText(Date date) {
+        if (date == null) {
+            return null;
+        }
         String locale = SystemConfiguration.getInstance().getDefaultLocale().toString();
         return formatDateTimeAsText(date, new Locale(locale));
     }

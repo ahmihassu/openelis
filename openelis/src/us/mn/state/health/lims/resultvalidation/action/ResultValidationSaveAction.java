@@ -59,6 +59,7 @@ import us.mn.state.health.lims.testresult.valueholder.TestResult;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -241,6 +242,8 @@ public class ResultValidationSaveAction extends BaseResultValidationAction {
 							analysis.finalizeResult();
 						}
 						analysis.setReleasedDate(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+						// Capture validation datetime for TAT report (entered/completed timestamp)
+						analysis.setSoNotifyReceivedDate(new Timestamp(System.currentTimeMillis()));
 						analysisIdList.add(analysisId);
 						analysisUpdateList.add(analysis);
 					}
