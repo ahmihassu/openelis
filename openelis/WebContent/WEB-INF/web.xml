@@ -132,6 +132,20 @@
     </servlet>
 
     <servlet>
+        <servlet-name>insertAnalyzerData</servlet-name>
+        <display-name>insertAnalyzerData</display-name>
+        <servlet-class>us.mn.state.health.lims.analyzerimport.action.InsertAnalyzerDataServlet</servlet-class>
+        <load-on-startup>14</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>addAnalyzerData</servlet-name>
+        <display-name>addAnalyzerData</display-name>
+        <servlet-class>us.mn.state.health.lims.analyzerimport.action.AddAnalyzerDataServlet</servlet-class>
+        <load-on-startup>15</load-on-startup>
+    </servlet>
+
+    <servlet>
         <servlet-name>MetricServicesServlet</servlet-name>
         <display-name>MetricServicesServlet</display-name>
         <servlet-class>us.mn.state.health.lims.metricservice.action.MetricServicesServlet</servlet-class>
@@ -211,6 +225,16 @@
     <servlet-mapping>
         <servlet-name>importAnalyzer</servlet-name>
         <url-pattern>/importAnalyzer</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>insertAnalyzerData</servlet-name>
+        <url-pattern>/insertAnalyzerData</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>addAnalyzerData</servlet-name>
+        <url-pattern>/addAnalyzerData</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
