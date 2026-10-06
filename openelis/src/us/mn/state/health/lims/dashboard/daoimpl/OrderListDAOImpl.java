@@ -23,6 +23,7 @@ import us.mn.state.health.lims.common.exception.LIMSRuntimeException;
 import us.mn.state.health.lims.common.util.DateUtil;
 import us.mn.state.health.lims.dashboard.dao.OrderListDAO;
 import us.mn.state.health.lims.dashboard.valueholder.Order;
+import us.mn.state.health.lims.dashboard.valueholder.OrderedTestsLabelData;
 import us.mn.state.health.lims.hibernate.HibernateUtil;
 import us.mn.state.health.lims.statusofsample.util.StatusOfSampleUtil;
 
@@ -30,6 +31,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -256,5 +258,62 @@ public class OrderListDAOImpl implements OrderListDAO {
         analysisStatuses.add(parseInt(getStatusID(finalized)));
         analysisStatuses.add(parseInt(getStatusID(finalizedRO)));
         return StringUtils.join(analysisStatuses.iterator(), ',');
+    }
+
+    @Override
+    public OrderedTestsLabelData getOrderedTestsLabelDataByAccession(String accessionNumber) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = getPreparedStatement(createSqlForOrderedTestsByAccession());
+            preparedStatement.setString(1, accessionNumber);
+            resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                return null;
+            }
+            String tests = resultSet.getString("tests");
+            String name = resultSet.getString("name");
+            String gender = resultSet.getString("gender");
+            Timestamp birthDate = resultSet.getTimestamp("birth_date");
+            String birthDateText = birthDate == null ? "" : DateUtil.formatDateAsText(birthDate);
+            return new OrderedTestsLabelData(
+                    tests == null ? "" : tests,
+                    name == null ? "" : name.trim().replaceAll("\\s+", " "),
+                    gender == null ? "" : gender,
+                    birthDateText);
+        } catch (SQLException e) {
+            throw new LIMSRuntimeException(e);
+        } finally {
+            closeResultSet(resultSet);
+            closePreparedStatement(preparedStatement);
+        }
+    }
+
+    /**
+     * Aggregates distinct ordered test/panel names for a sample accession, with patient demographics for labels.
+     */
+    private String createSqlForOrderedTestsByAccession() {
+        return "SELECT "
+                + "string_agg(DISTINCT test_panel, ', ') AS tests, "
+                + "name, "
+                + "gender, "
+                + "birth_date "
+                + "FROM ("
+                + "  SELECT CONCAT(pe.first_name, ' ', pe.middle_name, ' ', pe.last_name) AS name, "
+                + "         pa.gender AS gender, "
+                + "         pa.birth_date AS birth_date, "
+                + "         CASE WHEN pan.name IS NOT NULL THEN pan.name ELSE t.name END AS test_panel "
+                + "  FROM sample s "
+                + "  JOIN sample_item si ON si.samp_id = s.id "
+                + "  JOIN analysis a ON a.sampitem_id = si.id "
+                + "  JOIN sample_human sh ON sh.samp_id = s.id "
+                + "  JOIN patient pa ON pa.id = sh.patient_id "
+                + "  JOIN person pe ON pe.id = pa.person_id "
+                + "  JOIN test t ON t.id = a.test_id "
+                + "  LEFT JOIN panel pan ON pan.id = a.panel_id "
+                + "  WHERE s.accession_number = ? "
+                + "  ORDER BY si.id"
+                + ") temp "
+                + "GROUP BY temp.name, gender, birth_date";
     }
 }

@@ -17,6 +17,7 @@
 package us.mn.state.health.lims.dashboard.dao;
 
 import us.mn.state.health.lims.dashboard.valueholder.Order;
+import us.mn.state.health.lims.dashboard.valueholder.OrderedTestsLabelData;
 
 import java.util.List;
 
@@ -25,4 +26,5 @@ public interface OrderListDAO {
     List<Order> getAllPendingBeforeToday();
     List<Order> getAllSampleNotCollectedToday();
     List<Order> getAllSampleNotCollectedPendingBeforeToday();
+    OrderedTestsLabelData getOrderedTestsLabelDataByAccession(String accessionNumber);
 }

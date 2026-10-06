@@ -163,6 +163,9 @@ basePath = path + "/";
                         <span class='label-value' id="labelPatientId"></span>
                         <span class='label-value' style="padding-left:20px;" id="collectionDate"></span>
                     </div>
+                    <div style="font-family: sans-serif; font-size: 8px; margin-right: 15px; margin-top:4px; height: 15px; margin-bottom: 14px">
+                        <span class='label-value' id="tests"></span>
+                    </div>
                     <svg style="margin-left:-10px;margin-bottom:-20px;padding:-18px;height:50px;" id="barcode"></svg>
                 </div>
             </div>
@@ -175,6 +178,9 @@ basePath = path + "/";
                         <br/>
                         <span class='label-value' id="secondLabelPatientId"></span>
                         <span class='label-value' style="padding-left:20px;" id="secondLabelCollectionDate"></span>
+                    </div>
+                    <div style="font-family: sans-serif; font-size: 8px; margin-right: 15px; margin-top:4px; height: 15px; margin-bottom: 14px">
+                        <span class='label-value' id="secondLabelTests"></span>
                     </div>
                     <svg style="margin-left:-10px;margin-bottom:-20px;padding:-18px;height:50px;"
                          id="secondLabelBarcode"></svg>
@@ -336,66 +342,73 @@ basePath = path + "/";
 
 
 
-    var showLabelDetails = function(firstName, middleName, lastName,gender, age,stn,collectionDate) {
-        jQuery("#patientName").text(firstName + " " + lastName[0]);
-        jQuery("#secondLabelPatientName").text(firstName + " " + lastName[0]);
-        if(gender==='M') {
-            gender='Male'
+    var formatGenderForLabel = function(gender) {
+        if (gender === 'M') {
+            return 'Male';
         }
-        if(gender==='F') {
-            gender='Female'
+        if (gender === 'F') {
+            return 'Female';
         }
-        if(gender=='O') {
-            gender='Other'
+        if (gender === 'O') {
+            return 'Other';
         }
-        jQuery("#patientGender").text(gender);
-        jQuery("#secondLabelPatientGender").text(gender);
-        jQuery("#patientAge").text(age);
-        jQuery("#secondLabelPatientAge").text(age);
+        return gender || '';
+    };
+
+    var showLabelDetails = function(patientName, tests, gender, age, stn, collectionDate) {
+        var displayGender = formatGenderForLabel(gender);
+        jQuery("#patientName").text(patientName || '');
+        jQuery("#secondLabelPatientName").text(patientName || '');
+        jQuery("#patientGender").text(displayGender);
+        jQuery("#secondLabelPatientGender").text(displayGender);
+        jQuery("#patientAge").text(age || '');
+        jQuery("#secondLabelPatientAge").text(age || '');
         jQuery('#labelPatientId').text(stn);
         jQuery('#secondLabelPatientId').text(stn);
         jQuery('#collectionDate').text(collectionDate);
         jQuery('#secondLabelCollectionDate').text(collectionDate);
+        jQuery('#tests').text(tests || '');
+        jQuery('#secondLabelTests').text(tests || '');
+    };
 
-    }
-
-    var showLabelDetailsWithoutPatientDetails = function(stn,collectionDate) {
+    var showLabelDetailsWithoutPatientDetails = function(stn, collectionDate, tests) {
         jQuery('#labelPatientId').text(stn);
         jQuery('#secondLabelPatientId').text(stn);
         jQuery('#collectionDate').text(collectionDate);
         jQuery('#secondLabelCollectionDate').text(collectionDate);
+        jQuery('#tests').text(tests || '');
+        jQuery('#secondLabelTests').text(tests || '');
+    };
 
-    }
-
-    function labelSelected(stNumber, an,collectionDateStr,jQuery) {
-        new Ajax.Request ('ajaxQueryXML', {
+    function labelSelected(stNumber, an, collectionDateStr, jQuery) {
+        new Ajax.Request('ajaxQueryXML', {
             method: 'get',
-            parameters: "provider=PatientSearchPopulateProvider&stNumber=" + stNumber,
-            onSuccess:  function onLabelSelected(xhr) {
+            parameters: "provider=OrderedTestsPopulateProvider&accessionNumber=" + encodeURIComponent(an),
+            onSuccess: function onLabelSelected(xhr) {
                 var datePattern = '<%=SystemConfiguration.getInstance().getPatternForDateLocale() %>';
                 var showPatientDetails = '<%=showPatientsDetailsInSampleLabelPrint%>';
-                if(showPatientDetails==='true') {
+                var tests = OpenElis.Utils.getXMLValue(xhr.responseXML, 'tests');
+                if (showPatientDetails === 'true') {
                     showLabelDetails(
-                        OpenElis.Utils.getXMLValue(xhr.responseXML, 'firstName'),
-                        OpenElis.Utils.getXMLValue(xhr.responseXML, 'middleName'),
-                        OpenElis.Utils.getXMLValue(xhr.responseXML, 'lastName'),
+                        OpenElis.Utils.getXMLValue(xhr.responseXML, 'patientName'),
+                        tests,
                         OpenElis.Utils.getXMLValue(xhr.responseXML, 'gender'),
-                        OpenElis.Utils.calculateAge(OpenElis.Utils.getXMLValue(xhr.responseXML, 'dob'), datePattern),
+                        OpenElis.Utils.calculateAge(OpenElis.Utils.getXMLValue(xhr.responseXML, 'birth_date'), datePattern),
                         stNumber,
                         collectionDateStr
                     );
                 } else {
-                    showLabelDetailsWithoutPatientDetails(stNumber,collectionDateStr);
+                    showLabelDetailsWithoutPatientDetails(stNumber, collectionDateStr, tests);
                 }
                 jQuery(".accessionNumber").html(an);
-                jQuery("#barcode").JsBarcode(an,{
-                    width:1.1,
-                    height:25,
+                jQuery("#barcode").JsBarcode(an, {
+                    width: 1.1,
+                    height: 25,
                     fontSize: 9
-                });jQuery(".accessionNumber").html(an);
-                jQuery("#secondLabelBarcode").JsBarcode(an,{
-                    width:1.1,
-                    height:25,
+                });
+                jQuery("#secondLabelBarcode").JsBarcode(an, {
+                    width: 1.1,
+                    height: 25,
                     fontSize: 9
                 });
                 printDiv('labelPrintModel');
