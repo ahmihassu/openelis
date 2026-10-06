@@ -100,7 +100,7 @@ public class AnalyzerResultsAction extends BaseAction {
 				PropertyUtils.setProperty(dynaForm, "resultList", new ArrayList<AnalyzerResultItem>());
 				String msg = StringUtil.getMessageForKey("result.noResultsFound");
 				PropertyUtils.setProperty(dynaForm, "notFoundMsg", msg);
-				paging.setEmptyPageBean(request,dynaForm);
+				paging.setEmptyPageBean(request, dynaForm);
 
 			} else {
 
@@ -159,39 +159,39 @@ public class AnalyzerResultsAction extends BaseAction {
 
 	private void setNonConformityStateForResultItem(AnalyzerResultItem resultItem) {
 		boolean nonconforming = false;
-		
+
 		Sample sample = sampleDAO.getSampleByAccessionNumber(resultItem.getAccessionNumber());
-		if( sample!= null){
+		if (sample != null) {
 			nonconforming = QAService.isOrderNonConforming(sample);
 			//The sample is nonconforming, now we have to check if any sample items are non_conforming and 
 			// if they are are they for this test
 			//Note we only have to check one test since the sample item is the same for all the tests
 
-			if( nonconforming ){
+			if (nonconforming) {
 				List<SampleItem> nonConformingSampleItems = QAService.getNonConformingSampleItems(sample);
 				//If there is a nonconforming sample item then we need to check if it is the one for this
 				//test if it is then it is nonconforming if not then it is not nonconforming
-				if( !nonConformingSampleItems.isEmpty()){					
+				if (!nonConformingSampleItems.isEmpty()) {
 					TypeOfSampleTest typeOfSample = sampleTypeTestDAO.getTypeOfSampleTestForTest(resultItem.getTestId());
-					if( typeOfSample != null){
+					if (typeOfSample != null) {
 						String sampleTypeId = typeOfSample.getTypeOfSampleId();
-						nonconforming = false;	
-						for( SampleItem sampleItem : nonConformingSampleItems ){
-							if( sampleTypeId.equals(sampleItem.getTypeOfSample().getId() )){
+						nonconforming = false;
+						for (SampleItem sampleItem : nonConformingSampleItems) {
+							if (sampleTypeId.equals(sampleItem.getTypeOfSample().getId())) {
 								nonconforming = true;
 								break;
 							}
 						}
-					
+
 					}
 				}
-				
+
 			}
-			
+
 		}
-		
+
 		resultItem.setNonconforming(nonconforming);
-		
+
 	}
 
 	private List<List<AnalyzerResultItem>> groupAnalyzerResults(List<AnalyzerResults> analyzerResultsList) {
@@ -244,7 +244,7 @@ public class AnalyzerResultsAction extends BaseAction {
 					analyzerResultsDAO.updateData(analyzerResult);
 				}
 			} catch (LIMSRuntimeException lre) {
-                request.setAttribute(IActionConstants.REQUEST_FAILED, true);
+				request.setAttribute(IActionConstants.REQUEST_FAILED, true);
 			}
 
 		}
@@ -278,18 +278,18 @@ public class AnalyzerResultsAction extends BaseAction {
 
 		if (resultItem.isUserChoiceReflex()) {
 			setChoiceForCurrentValue(resultItem, result);
-			resultItem.setUserChoicePending(!GenericValidator.isBlankOrNull(resultItem.getSelectionOneText()) );
+			resultItem.setUserChoicePending(!GenericValidator.isBlankOrNull(resultItem.getSelectionOneText()));
 		}
 		return resultItem;
 	}
 
 	private boolean giveUserChoice(AnalyzerResults result) {
 		/*
-		 * This is how we figure out if the user will be able to select 
-		 * 1. Is the test involved with triggering a user selection 
-		 *    reflex 
-		 * 2. If the reflex has sibs has the sample been entered yet 
-		 * 3. If the sample has been entered have all of the sibling 
+		 * This is how we figure out if the user will be able to select
+		 * 1. Is the test involved with triggering a user selection
+		 *    reflex
+		 * 2. If the reflex has sibs has the sample been entered yet
+		 * 3. If the sample has been entered have all of the sibling
 		 *    tests been ordered
 		 */
 		if (!TestReflexUtil.isTriggeringUserChoiceReflexTestId(result.getTestId())) {
@@ -331,32 +331,32 @@ public class AnalyzerResultsAction extends BaseAction {
 		/*
 		 * If there are no siblings for the reflex then we just need to find if
 		 * there are choices for the current value
-		 * 
+		 *
 		 * If there are siblings then we need to find if they are currently
 		 * satisfied
 		 */
 		TestReflex selectionOne = null;
 		TestReflex selectionTwo = null;
-		
+
 		if (!TestReflexUtil.testIsTriggeringReflexWithSibs(analyzerResult.getTestId())) {
 			List<TestReflex> reflexes = reflexUtil.getTestReflexsForDictioanryResultTestId(analyzerResult.getResult(), analyzerResult.getTestId(), true);
 			resultItem.setReflexSelectionId(null);
 			for (TestReflex reflex : reflexes) {
-					if (selectionOne == null) {
-						selectionOne = reflex;
-					} else {
-						selectionTwo = reflex;
-					}
+				if (selectionOne == null) {
+					selectionOne = reflex;
+				} else {
+					selectionTwo = reflex;
+				}
 			}
 
 		} else {
-			
+
 			Sample sample = getSampleForAnalyzerResult(analyzerResult);
 
 			List<Analysis> analysisList = analysisDAO.getAnalysesBySampleId(sample.getId());
-			
+
 			List<TestReflex> reflexesForDisplayedTest = reflexUtil.getTestReflexsForDictioanryResultTestId(analyzerResult.getResult(), analyzerResult.getTestId(), true);
-			
+
 			for (TestReflex possibleTestReflex : reflexesForDisplayedTest) {
 				if (TestReflexUtil.USER_CHOOSE_FLAG.equals(possibleTestReflex.getFlags())) {
 					if (GenericValidator.isBlankOrNull(possibleTestReflex.getSiblingReflexId())) {
@@ -388,7 +388,7 @@ public class AnalyzerResultsAction extends BaseAction {
 							for (Result result : resultList) {
 								TestResult testResult = testResultDAO.getTestResultsByTestAndDictonaryResult(test.getId(),
 										result.getValue());
-								if (testResult != null && testResult.getId().equals(sibTestReflex.getTestResultId())) {	
+								if (testResult != null && testResult.getId().equals(sibTestReflex.getTestResultId())) {
 									if (possibleTestReflex.getActionScriptlet() != null) {
 										selectionOne = possibleTestReflex;
 										break;
@@ -432,7 +432,7 @@ public class AnalyzerResultsAction extends BaseAction {
 				} else {
 					resultItem.setSelectionTwoText(TestReflexUtil.makeReflexScriptName(selectionTwo));
 					resultItem.setSelectionTwoValue(TestReflexUtil.makeReflexScriptValue(selectionOne));
-				}					
+				}
 			}
 		}
 	}
@@ -447,9 +447,9 @@ public class AnalyzerResultsAction extends BaseAction {
 
 		//If it's readonly or the selectlist can not be gotten then we want the result
 		//otherwise we want the id so the correct selection will be choosen
-		if( result.isReadOnly() || result.getTestId() == null || result.getIsControl()){
-			return dictionaryDAO.getDictionaryById(result.getResult()).getDictEntry() ;
-		}else{
+		if (result.isReadOnly() || result.getTestId() == null || result.getIsControl()) {
+			return dictionaryDAO.getDictionaryById(result.getResult()).getDictEntry();
+		} else {
 			return result.getResult();
 		}
 	}
@@ -486,41 +486,173 @@ public class AnalyzerResultsAction extends BaseAction {
 		String key = null;
 
 		switch (analyzerType) {
-		case COBAS_INTEGRA400: {
-			key = "banner.menu.results.cobas.integra";
-			break;
-		}
-		case SYSMEX_XT_2000: {
-			key = "banner.menu.results.sysmex";
-			break;
-		}
-		case FACSCALIBUR: {
-			key = "banner.menu.results.facscalibur";
-			break;
-		}
-        case FACSCANTO: {
-			key = "banner.menu.results.facscanto";
-			break;
-		}
-		case EVOLIS: {
-			key = "banner.menu.results.evolis";
-			break;
-		}
-		case COBAS_TAQMAN: {
-			key = "banner.menu.results.cobas.taqman";
-			break;
-		}
-		case COBAS_DBS: {
-			key = "banner.menu.results.cobasDBS";
-			break;
-		}
-		case COBAS_C311: {
-			key = "banner.menu.results.cobasc311";
-			break;
-		}
-		default: {
-			key = "banner.menu.results.analyzer";
-		}
+			case COBAS_INTEGRA400: {
+				key = "banner.menu.results.cobas.integra";
+				break;
+			}
+			case SYSMEX_XT_2000: {
+				key = "banner.menu.results.sysmex";
+				break;
+			}
+
+			case Mindray_3452: {
+				key = "banner.menu.results.mindray";
+				break;
+			}
+			case Dxh_800: {
+				key = "banner.menu.results.dxh";
+				break;
+			}
+
+			case Dxc_700: {
+				key = "banner.menu.results.dxc";
+				break;
+			}
+
+			case ADV: {
+				key = "banner.menu.results.adv";
+				break;
+			}
+
+			case Abx_Micros: {
+				key = "banner.menu.results.abx";
+				break;
+			}
+
+			case Dxi_800: {
+				key = "banner.menu.results.dxi_800";
+				break;
+			}
+
+			case SYSMEX_XN: {
+				key = "banner.menu.results.sysmex_xn";
+				break;
+			}
+
+			case SYSMEX_KX: {
+				key = "banner.menu.results.sysmex_kx";
+				break;
+			}
+
+			case Humastar200: {
+				key = "banner.menu.results.humastar";
+				break;
+			}
+
+			case BS200E: {
+				key = "banner.menu.results.bs200e";
+				break;
+			}
+
+			case Amha1806: {
+				key = "banner.menu.results.am1806";
+				break;
+			}
+
+			case DYMINDDH36: {
+				key = "banner.menu.results.dymind_dh36";
+				break;
+			}
+			case MN5150: {
+				key = "banner.menu.results.mn5150";
+				break;
+			}
+			case BC30: {
+				key = "banner.menu.results.bc30";
+				break;
+			}
+
+			case DF5: {
+				key = "banner.menu.results.df5";
+				break;
+			}
+			case BK: {
+				key = "banner.menu.results.bk";
+				break;
+			}
+            case BS230: {
+                key = "banner.menu.results.bs230";
+                break;
+            }
+
+            case COBAS6000: {
+                key = "banner.menu.results.cobas6000";
+                break;
+            }
+
+            case FN: {
+                key = "banner.menu.results.fn";
+                break;
+            }
+
+            case CL: {
+                key = "banner.menu.results.cl";
+                break;
+            }
+
+			case MindrayBC780: {
+				key = "banner.menu.results.bc_780";
+				break;
+			}
+
+			case COBASE402: {
+				key = "banner.menu.results.e402";
+				break;
+			}
+
+			case MindrayCL980I: {
+				key = "banner.menu.results.cl_980i";
+				break;
+			}
+
+			case BC3000: {
+				key = "banner.menu.results.bc3000";
+				break;
+			}
+
+			case GENEXPERT: {
+				key = "banner.menu.results.genexpert";
+				break;
+			}
+
+
+			case COBASC311: {
+				key = "banner.menu.results.cobas_c311";
+				break;
+			}
+
+			case EXL200: {
+				key = "banner.menu.results.exl";
+				break;
+			}
+
+			case FACSCALIBUR: {
+				key = "banner.menu.results.facscalibur";
+				break;
+			}
+			case FACSCANTO: {
+				key = "banner.menu.results.facscanto";
+				break;
+			}
+			case EVOLIS: {
+				key = "banner.menu.results.evolis";
+				break;
+			}
+			case COBAS_TAQMAN: {
+				key = "banner.menu.results.cobas.taqman";
+				break;
+			}
+			case COBAS_DBS: {
+				key = "banner.menu.results.cobasDBS";
+				break;
+			}
+			case COBAS_C311: {
+				key = "banner.menu.results.cobasc311";
+				break;
+			}
+			default: {
+				key = "banner.menu.results.analyzer";
+			}
 		}
 
 		return key;
@@ -533,6 +665,66 @@ public class AnalyzerResultsAction extends BaseAction {
 				analyzerType = AnalyzerType.SYSMEX_XT_2000;
 			} else if (requestType.equals("cobas_integra")) {
 				analyzerType = AnalyzerType.COBAS_INTEGRA400;
+			} else if (requestType.equals("mindray")) {
+				analyzerType = AnalyzerType.Mindray_3452;
+			} else if (requestType.equals("dxh")) {
+				analyzerType = AnalyzerType.Dxh_800;
+			} else if (requestType.equals("dxc")) {
+				analyzerType = AnalyzerType.Dxc_700;
+			} else if (requestType.equals("adv")) {
+				analyzerType = AnalyzerType.ADV;
+			} else if (requestType.equals("abx")) {
+				analyzerType = AnalyzerType.Abx_Micros;
+			} else if (requestType.equals("dxi_800")) {
+				analyzerType = AnalyzerType.Dxi_800;
+			} else if (requestType.equals("sysmex_xn")) {
+				analyzerType = AnalyzerType.SYSMEX_XN;
+			} else if (requestType.equals("sysmex_kx")) {
+				analyzerType = AnalyzerType.SYSMEX_KX;
+			} else if (requestType.equals("humastar")) {
+				analyzerType = AnalyzerType.Humastar200;
+			} else if (requestType.equals("bs200e")) {
+				analyzerType = AnalyzerType.BS200E;
+			} else if (requestType.equals("dymind_dh36")) {
+				analyzerType = AnalyzerType.DYMINDDH36;
+
+			} else if (requestType.equals("mn5150")) {
+				analyzerType = AnalyzerType.MN5150;
+			
+			} else if (requestType.equals("bc30")) {
+				analyzerType = AnalyzerType.BC30;
+
+			} else if (requestType.equals("df5")) {
+			analyzerType = AnalyzerType.DF5;
+
+			} else if (requestType.equals("bk")) {
+				analyzerType = AnalyzerType.BK;
+            } else if (requestType.equals("bs230")) {
+                analyzerType = AnalyzerType.BS230;
+
+            } else if (requestType.equals("cobas6000")) {
+                analyzerType = AnalyzerType.COBAS6000;
+
+            } else if (requestType.equals("fn")) {
+                analyzerType = AnalyzerType.FN;
+
+            } else if (requestType.equals("cl")) {
+                analyzerType = AnalyzerType.CL;
+
+			} else if (requestType.equals("bc_780")) {
+				analyzerType = AnalyzerType.MindrayBC780;
+			} else if (requestType.equals("e402")) {
+				analyzerType = AnalyzerType.COBASE402;
+			} else if (requestType.equals("cl_980i")) {
+				analyzerType = AnalyzerType.MindrayCL980I;
+			} else if (requestType.equals("bc3000")) {
+				analyzerType = AnalyzerType.BC3000;
+			} else if (requestType.equals("cobas_c311")) {
+				analyzerType = AnalyzerType.COBASC311;
+			} else if (requestType.equals("exl")) {
+				analyzerType = AnalyzerType.EXL200;
+			} else if (requestType.equals("genexpert")) {
+				analyzerType = AnalyzerType.GENEXPERT;
 			} else if (requestType.equals("facscalibur")) {
 				analyzerType = AnalyzerType.FACSCALIBUR;
 			} else if (requestType.equals("evolis")) {
@@ -541,11 +733,15 @@ public class AnalyzerResultsAction extends BaseAction {
 				analyzerType = AnalyzerType.COBAS_TAQMAN;
 			} else if (requestType.equals("facscanto")) {
 				analyzerType = AnalyzerType.FACSCANTO;
-			}else if (requestType.equals("cobasDBS")) {
+			} else if (requestType.equals("cobasDBS")) {
 				analyzerType = AnalyzerType.COBAS_DBS;
-			}else if (requestType.equals("cobasc311")) {
+			} else if (requestType.equals("cobasc311")) {
 				analyzerType = AnalyzerType.COBAS_C311;
+
+			} else if (requestType.equals("am1806")) {
+				analyzerType = AnalyzerType.Amha1806;
 			}
+
 		}
 	}
 }

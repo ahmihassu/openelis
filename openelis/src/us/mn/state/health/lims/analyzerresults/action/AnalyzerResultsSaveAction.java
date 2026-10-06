@@ -557,6 +557,7 @@ public class AnalyzerResultsSaveAction extends BaseAction {
 
 			populateAnalysis(resultItem, analysis, analysis.getTest());
 			analysis.setSysUserId(sysUserId);
+			analysis.setEnteredDate(DateUtil.getNowAsTimestamp());
 			analysisList.add(analysis);
 
 			Result result = getResult(analysis, resultItem);
@@ -675,6 +676,7 @@ public class AnalyzerResultsSaveAction extends BaseAction {
 			}
 
 			analysis.setSysUserId(sysUserId);
+			analysis.setEnteredDate(DateUtil.getNowAsTimestamp());
 			analysisList.add(analysis);
 
 			Result result = getResult(analysis, resultItem);

@@ -234,7 +234,7 @@ function /*void*/ markUpdated(){
 	</tr>
 	<logic:iterate id="resultList" name="<%=formName%>" property="resultList" indexId="dataIndex" type="AnalyzerResultItem" >
         <%
-           showAccessionNumber = !resultList.getAccessionNumber().equals(currentAccessionNumber);
+           showAccessionNumber = !resultList.getAccessionNumber().equals(currentAccessionNumber) || (dataIndex == 0);
            itemReadOnly = resultList.isReadOnly();
 		   if( showAccessionNumber ){
 					currentAccessionNumber = resultList.getAccessionNumber();

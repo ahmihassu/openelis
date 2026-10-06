@@ -1857,5 +1857,1058 @@
         </update>
     </changeSet>
 
+    <changeSet id="wachemo-analyzer-menu-mindray" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_mindray'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for mindray</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="10"/>
+            <column name="element_id" value="menu_results_mindray"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=mindray"/>
+            <column name="display_key" value="banner.menu.results.mindray"/>
+            <column name="tool_tip_key" value="banner.menu.results.mindray"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-mindray" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:mindray'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for mindray</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:mindray"/>
+            <column name="description" value="AnalyzerResults=&gt;mindray"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-dxh" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_dxh'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for dxh</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="11"/>
+            <column name="element_id" value="menu_results_dxh"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=dxh"/>
+            <column name="display_key" value="banner.menu.results.dxh"/>
+            <column name="tool_tip_key" value="banner.menu.results.dxh"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-dxh" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:dxh'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for dxh</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:dxh"/>
+            <column name="description" value="AnalyzerResults=&gt;dxh"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-dxc" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_dxc'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for dxc</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="12"/>
+            <column name="element_id" value="menu_results_dxc"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=dxc"/>
+            <column name="display_key" value="banner.menu.results.dxc"/>
+            <column name="tool_tip_key" value="banner.menu.results.dxc"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-dxc" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:dxc'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for dxc</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:dxc"/>
+            <column name="description" value="AnalyzerResults=&gt;dxc"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-adv" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_adv'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for adv</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="13"/>
+            <column name="element_id" value="menu_results_adv"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=adv"/>
+            <column name="display_key" value="banner.menu.results.adv"/>
+            <column name="tool_tip_key" value="banner.menu.results.adv"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-adv" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:adv'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for adv</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:adv"/>
+            <column name="description" value="AnalyzerResults=&gt;adv"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-abx" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_abx'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for abx</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="14"/>
+            <column name="element_id" value="menu_results_abx"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=abx"/>
+            <column name="display_key" value="banner.menu.results.abx"/>
+            <column name="tool_tip_key" value="banner.menu.results.abx"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-abx" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:abx'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for abx</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:abx"/>
+            <column name="description" value="AnalyzerResults=&gt;abx"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-dxi_800" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_dxi_800'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for dxi_800</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="15"/>
+            <column name="element_id" value="menu_results_dxi_800"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=dxi_800"/>
+            <column name="display_key" value="banner.menu.results.dxi_800"/>
+            <column name="tool_tip_key" value="banner.menu.results.dxi_800"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-dxi_800" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:dxi_800'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for dxi_800</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:dxi_800"/>
+            <column name="description" value="AnalyzerResults=&gt;dxi_800"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-sysmex_xn" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_sysmex_xn'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for sysmex_xn</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="16"/>
+            <column name="element_id" value="menu_results_sysmex_xn"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=sysmex_xn"/>
+            <column name="display_key" value="banner.menu.results.sysmex_xn"/>
+            <column name="tool_tip_key" value="banner.menu.results.sysmex_xn"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-sysmex_xn" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:sysmex_xn'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for sysmex_xn</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:sysmex_xn"/>
+            <column name="description" value="AnalyzerResults=&gt;sysmex_xn"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-sysmex_kx" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_sysmex_kx'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for sysmex_kx</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="17"/>
+            <column name="element_id" value="menu_results_sysmex_kx"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=sysmex_kx"/>
+            <column name="display_key" value="banner.menu.results.sysmex_kx"/>
+            <column name="tool_tip_key" value="banner.menu.results.sysmex_kx"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-sysmex_kx" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:sysmex_kx'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for sysmex_kx</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:sysmex_kx"/>
+            <column name="description" value="AnalyzerResults=&gt;sysmex_kx"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-humastar" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_humastar'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for humastar</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="18"/>
+            <column name="element_id" value="menu_results_humastar"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=humastar"/>
+            <column name="display_key" value="banner.menu.results.humastar"/>
+            <column name="tool_tip_key" value="banner.menu.results.humastar"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-humastar" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:humastar'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for humastar</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:humastar"/>
+            <column name="description" value="AnalyzerResults=&gt;humastar"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-bs200e" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_bs200e'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for bs200e</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="19"/>
+            <column name="element_id" value="menu_results_bs200e"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=bs200e"/>
+            <column name="display_key" value="banner.menu.results.bs200e"/>
+            <column name="tool_tip_key" value="banner.menu.results.bs200e"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-bs200e" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:bs200e'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for bs200e</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:bs200e"/>
+            <column name="description" value="AnalyzerResults=&gt;bs200e"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-am1806" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_am1806'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for am1806</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="20"/>
+            <column name="element_id" value="menu_results_am1806"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=am1806"/>
+            <column name="display_key" value="banner.menu.results.am1806"/>
+            <column name="tool_tip_key" value="banner.menu.results.am1806"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-am1806" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:am1806'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for am1806</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:am1806"/>
+            <column name="description" value="AnalyzerResults=&gt;am1806"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-dymind_dh36" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_dymind_dh36'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for dymind_dh36</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="21"/>
+            <column name="element_id" value="menu_results_dymind_dh36"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=dymind_dh36"/>
+            <column name="display_key" value="banner.menu.results.dymind_dh36"/>
+            <column name="tool_tip_key" value="banner.menu.results.dymind_dh36"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-dymind_dh36" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:dymind_dh36'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for dymind_dh36</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:dymind_dh36"/>
+            <column name="description" value="AnalyzerResults=&gt;dymind_dh36"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-mn5150" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_mn5150'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for mn5150</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="22"/>
+            <column name="element_id" value="menu_results_mn5150"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=mn5150"/>
+            <column name="display_key" value="banner.menu.results.mn5150"/>
+            <column name="tool_tip_key" value="banner.menu.results.mn5150"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-mn5150" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:mn5150'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for mn5150</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:mn5150"/>
+            <column name="description" value="AnalyzerResults=&gt;mn5150"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-bc30" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_bc30'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for bc30</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="23"/>
+            <column name="element_id" value="menu_results_bc30"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=bc30"/>
+            <column name="display_key" value="banner.menu.results.bc30"/>
+            <column name="tool_tip_key" value="banner.menu.results.bc30"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-bc30" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:bc30'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for bc30</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:bc30"/>
+            <column name="description" value="AnalyzerResults=&gt;bc30"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-df5" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_df5'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for df5</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="24"/>
+            <column name="element_id" value="menu_results_df5"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=df5"/>
+            <column name="display_key" value="banner.menu.results.df5"/>
+            <column name="tool_tip_key" value="banner.menu.results.df5"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-df5" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:df5'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for df5</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:df5"/>
+            <column name="description" value="AnalyzerResults=&gt;df5"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-bk" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_bk'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for bk</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="25"/>
+            <column name="element_id" value="menu_results_bk"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=bk"/>
+            <column name="display_key" value="banner.menu.results.bk"/>
+            <column name="tool_tip_key" value="banner.menu.results.bk"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-bk" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:bk'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for bk</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:bk"/>
+            <column name="description" value="AnalyzerResults=&gt;bk"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-bs230" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_bs230'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for bs230</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="26"/>
+            <column name="element_id" value="menu_results_bs230"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=bs230"/>
+            <column name="display_key" value="banner.menu.results.bs230"/>
+            <column name="tool_tip_key" value="banner.menu.results.bs230"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-bs230" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:bs230'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for bs230</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:bs230"/>
+            <column name="description" value="AnalyzerResults=&gt;bs230"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-cobas6000" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_cobas6000'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for cobas6000</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="27"/>
+            <column name="element_id" value="menu_results_cobas6000"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=cobas6000"/>
+            <column name="display_key" value="banner.menu.results.cobas6000"/>
+            <column name="tool_tip_key" value="banner.menu.results.cobas6000"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-cobas6000" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:cobas6000'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for cobas6000</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:cobas6000"/>
+            <column name="description" value="AnalyzerResults=&gt;cobas6000"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-fn" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_fn'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for fn</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="28"/>
+            <column name="element_id" value="menu_results_fn"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=fn"/>
+            <column name="display_key" value="banner.menu.results.fn"/>
+            <column name="tool_tip_key" value="banner.menu.results.fn"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-fn" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:fn'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for fn</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:fn"/>
+            <column name="description" value="AnalyzerResults=&gt;fn"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-cl" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_cl'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for cl</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="29"/>
+            <column name="element_id" value="menu_results_cl"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=cl"/>
+            <column name="display_key" value="banner.menu.results.cl"/>
+            <column name="tool_tip_key" value="banner.menu.results.cl"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-cl" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:cl'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for cl</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:cl"/>
+            <column name="description" value="AnalyzerResults=&gt;cl"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-bc_780" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_bc_780'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for bc_780</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="30"/>
+            <column name="element_id" value="menu_results_bc_780"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=bc_780"/>
+            <column name="display_key" value="banner.menu.results.bc_780"/>
+            <column name="tool_tip_key" value="banner.menu.results.bc_780"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-bc_780" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:bc_780'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for bc_780</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:bc_780"/>
+            <column name="description" value="AnalyzerResults=&gt;bc_780"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-e402" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_e402'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for e402</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="31"/>
+            <column name="element_id" value="menu_results_e402"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=e402"/>
+            <column name="display_key" value="banner.menu.results.e402"/>
+            <column name="tool_tip_key" value="banner.menu.results.e402"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-e402" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:e402'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for e402</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:e402"/>
+            <column name="description" value="AnalyzerResults=&gt;e402"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-cl_980i" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_cl_980i'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for cl_980i</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="32"/>
+            <column name="element_id" value="menu_results_cl_980i"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=cl_980i"/>
+            <column name="display_key" value="banner.menu.results.cl_980i"/>
+            <column name="tool_tip_key" value="banner.menu.results.cl_980i"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-cl_980i" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:cl_980i'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for cl_980i</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:cl_980i"/>
+            <column name="description" value="AnalyzerResults=&gt;cl_980i"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-bc3000" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_bc3000'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for bc3000</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="33"/>
+            <column name="element_id" value="menu_results_bc3000"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=bc3000"/>
+            <column name="display_key" value="banner.menu.results.bc3000"/>
+            <column name="tool_tip_key" value="banner.menu.results.bc3000"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-bc3000" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:bc3000'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for bc3000</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:bc3000"/>
+            <column name="description" value="AnalyzerResults=&gt;bc3000"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-cobas_c311" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_cobas_c311'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for cobas_c311</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="34"/>
+            <column name="element_id" value="menu_results_cobas_c311"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=cobas_c311"/>
+            <column name="display_key" value="banner.menu.results.cobas_c311"/>
+            <column name="tool_tip_key" value="banner.menu.results.cobas_c311"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-cobas_c311" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:cobas_c311'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for cobas_c311</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:cobas_c311"/>
+            <column name="description" value="AnalyzerResults=&gt;cobas_c311"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-exl" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_exl'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for exl</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="35"/>
+            <column name="element_id" value="menu_results_exl"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=exl"/>
+            <column name="display_key" value="banner.menu.results.exl"/>
+            <column name="tool_tip_key" value="banner.menu.results.exl"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-exl" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:exl'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for exl</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:exl"/>
+            <column name="description" value="AnalyzerResults=&gt;exl"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="wachemo-analyzer-menu-genexpert" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.menu where element_id = 'menu_results_genexpert'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                select count(*) from clinlims.menu where element_id = 'menu_results_analyzer'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add analyzer results menu for genexpert</comment>
+        <insert schemaName="clinlims" tableName="menu">
+            <column name="id" valueNumeric=" nextval( 'menu_seq' ) "/>
+            <column name="parent_id"
+                    valueNumeric=" ( select id from clinlims.menu where element_id = 'menu_results_analyzer' ) "/>
+            <column name="presentation_order" valueNumeric="36"/>
+            <column name="element_id" value="menu_results_genexpert"/>
+            <column name="action_url" value="/AnalyzerResults.do?type=genexpert"/>
+            <column name="display_key" value="banner.menu.results.genexpert"/>
+            <column name="tool_tip_key" value="banner.menu.results.genexpert"/>
+        </insert>
+    </changeSet>
+    <changeSet id="wachemo-analyzer-module-genexpert" context="bahmni" author="wachemo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from clinlims.system_module where name = 'AnalyzerResults:genexpert'
+            </sqlCheck>
+        </preConditions>
+        <comment>Add AnalyzerResults system module for genexpert</comment>
+        <insert schemaName="clinlims" tableName="system_module">
+            <column name="id" valueNumeric=" nextval( 'system_module_seq' ) "/>
+            <column name="name" value="AnalyzerResults:genexpert"/>
+            <column name="description" value="AnalyzerResults=&gt;genexpert"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_select_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
 
