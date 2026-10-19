@@ -89,9 +89,12 @@ public class AccessionService {
         Patient patient = sampleHumanDAO.getPatientForSample(samples.get(0));
         List<AccessionDetail> accessionDetails = mapToAccessionDetail(samples, patient);
         AccessionDetail accessionDetail = mergeAccessionDetailsForEncounter(accessionDetails);
-        ExternalReference externalReference = externalReferenceDao.getDataByItemId(samples.get(0).getSampleSource().getId(),"SampleSource");
-        if(externalReference != null)
-            accessionDetail.setLabLocationUuid(externalReference.getExternalId());
+        if (samples.get(0).getSampleSource() != null && samples.get(0).getSampleSource().getId() != null) {
+            ExternalReference externalReference = externalReferenceDao.getDataByItemId(samples.get(0).getSampleSource().getId(), "SampleSource");
+            if (externalReference != null) {
+                accessionDetail.setLabLocationUuid(externalReference.getExternalId());
+            }
+        }
 
         return accessionDetail;
     }
@@ -131,7 +134,11 @@ public class AccessionService {
     }
 
     private String findPatientIdentity(Patient patient) {
-        PatientIdentity patientIdentity = patientIdentityDAO.getPatitentIdentityForPatientAndType(patient.getId(), primaryIdentityType().getId());
+        PatientIdentityType identityType = primaryIdentityType();
+        if (identityType == null) {
+            return "";
+        }
+        PatientIdentity patientIdentity = patientIdentityDAO.getPatitentIdentityForPatientAndType(patient.getId(), identityType.getId());
         return patientIdentity != null ? patientIdentity.getIdentityData() : "";
     }
 
@@ -140,7 +147,9 @@ public class AccessionService {
         List<Note> accessionNotes = resultsValidationUtility.getAccessionNotes(sample.getAccessionNumber());
         accessionDetail.setAccessionNotes(mapToAccessionNotes(accessionNotes));
         //too many dates in sample table. We just picked the one that can be closest to what we need.
-        accessionDetail.setDateTime(new java.sql.Timestamp(sample.getEnteredDate().getTime()));
+        if (sample.getEnteredDate() != null) {
+            accessionDetail.setDateTime(new java.sql.Timestamp(sample.getEnteredDate().getTime()));
+        }
         List<TestDetail> testDetails = new ArrayList<>();
         for (SampleItem sampleItem : sample.getSampleItems()) {
             mapSampleItem(testDetails, sampleItem);
@@ -152,7 +161,9 @@ public class AccessionService {
     private List<AccessionNote> mapToAccessionNotes(List<Note> accessionNotes) {
         List<AccessionNote> accessionNotesToPublish = new ArrayList<>();
         for (Note accessionNote : accessionNotes) {
-            accessionNotesToPublish.add(new AccessionNote(accessionNote.getText(),accessionNote.getSystemUser().getExternalId(), toISODateFormat(accessionNote.getLastupdated())));
+            String providerUuid = accessionNote.getSystemUser() != null ? accessionNote.getSystemUser().getExternalId() : null;
+            String noteDate = accessionNote.getLastupdated() != null ? toISODateFormat(accessionNote.getLastupdated()) : null;
+            accessionNotesToPublish.add(new AccessionNote(accessionNote.getText(), providerUuid, noteDate));
         }
         return accessionNotesToPublish;
     }
@@ -197,32 +208,80 @@ public class AccessionService {
     }
 
     private void setResultDetail(TestDetail testDetail, Result result) {
-        ResultSignature resultSignature = (ResultSignature) result.getResultSignatures().toArray()[0];
-        testDetail.setProviderUuid(resultSignature.getSystemUser().getExternalId());
+        // Technician signatures are optional (ResultTechnicianName defaults off, and
+        // analyzer acceptance never creates one). OpenMRS uses the default lab system
+        // provider when this is absent. Failing here drops the whole accession.
+        ResultSignature resultSignature = firstSignature(result);
+        if (resultSignature != null && resultSignature.getSystemUser() != null) {
+            testDetail.setProviderUuid(resultSignature.getSystemUser().getExternalId());
+        }
         addRecentNotes(result.getId(), testDetail);
         testDetail.setMinNormal(result.getMinNormal() != null && result.getMinNormal() != Double.NEGATIVE_INFINITY ? result.getMinNormal() : null);
         testDetail.setMaxNormal(result.getMaxNormal() != null && result.getMaxNormal() != Double.POSITIVE_INFINITY ? result.getMaxNormal() : null);
         setResultValue(testDetail, result);
         testDetail.setResultType(result.getResultType());
         testDetail.setIsAbnormal(result.getAbnormal());
-        testDetail.setDateTime(result.getAnalysis().getEnteredDate());
+        testDetail.setDateTime(resultDate(result));
         testDetail.setUploadedFileName(result.getUploadedFileName());
     }
 
-    protected void setResultValue(TestDetail testDetail, Result result) {
-        if (result.isValid()) {
-            if (result.isDictionary()) {
-                Dictionary dictionary = dictionaryDAO.getDataForId(result.getValue());
-                testDetail.setResult(dictionary.getDictEntry());
-                ExternalReference externalReference = externalReferenceDao.getDataByItemId(dictionary.getId(), TestService.CATEGORY_TEST_CODED_ANS);
-                if(externalReference!= null){
-                    testDetail.setResultUuid(externalReference.getExternalId());
-                }
-            }else{
-                testDetail.setResult(result.getValue());
-            }
+    private ResultSignature firstSignature(Result result) {
+        if (result.getResultSignatures() == null || result.getResultSignatures().isEmpty()) {
+            return null;
         }
+        return (ResultSignature) result.getResultSignatures().toArray()[0];
+    }
 
+    private Timestamp resultDate(Result result) {
+        Analysis analysis = result.getAnalysis();
+        if (analysis == null) {
+            return new Timestamp(System.currentTimeMillis());
+        }
+        if (analysis.getEnteredDate() != null) {
+            return analysis.getEnteredDate();
+        }
+        if (analysis.getReleasedDate() != null) {
+            return new Timestamp(analysis.getReleasedDate().getTime());
+        }
+        if (analysis.getCompletedDate() != null) {
+            return new Timestamp(analysis.getCompletedDate().getTime());
+        }
+        return new Timestamp(System.currentTimeMillis());
+    }
+
+    protected void setResultValue(TestDetail testDetail, Result result) {
+        if (!hasPublishableValue(result)) {
+            return;
+        }
+        if (result.isDictionary()) {
+            Dictionary dictionary = dictionaryDAO.getDataForId(result.getValue());
+            if (dictionary == null) {
+                testDetail.setResult(result.getValue());
+                return;
+            }
+            testDetail.setResult(dictionary.getDictEntry());
+            ExternalReference externalReference = externalReferenceDao.getDataByItemId(dictionary.getId(), TestService.CATEGORY_TEST_CODED_ANS);
+            if (externalReference != null) {
+                testDetail.setResultUuid(externalReference.getExternalId());
+            }
+        } else {
+            testDetail.setResult(result.getValue());
+        }
+    }
+
+    private boolean hasPublishableValue(Result result) {
+        if (result.getValue() == null || result.getResultType() == null) {
+            return false;
+        }
+        if (result.isDictionary()) {
+            return !"0".equals(result.getValue()) && !result.getValue().isEmpty();
+        }
+        // N numeric, A alphanumeric, R remark, T titer. isValid() omits A and T.
+        return "N".equals(result.getResultType())
+                || "A".equals(result.getResultType())
+                || "R".equals(result.getResultType())
+                || "T".equals(result.getResultType())
+                || result.isValid();
     }
 
     private void setExternalIds(Analysis analysis, TestDetail tr) {
