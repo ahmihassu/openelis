@@ -37,6 +37,7 @@ import us.mn.state.health.lims.patientidentitytype.dao.PatientIdentityTypeDAO;
 import us.mn.state.health.lims.patientidentitytype.valueholder.PatientIdentityType;
 import us.mn.state.health.lims.result.dao.ResultSignatureDAO;
 import us.mn.state.health.lims.result.valueholder.Result;
+import us.mn.state.health.lims.result.valueholder.ResultSignature;
 import us.mn.state.health.lims.sample.dao.SampleDAO;
 import us.mn.state.health.lims.sample.valueholder.Sample;
 import us.mn.state.health.lims.samplehuman.dao.SampleHumanDAO;
@@ -214,6 +215,46 @@ public class AccessionServiceTest {
         assertNull(testDetail.getResultUuid());
         assertEquals("dictEntry", testDetail.getResult());
 
+    }
+
+    @Test
+    public void shouldPublishFinalizedResultWhenTechnicianSignatureIsMissing() {
+        AccessionService accessionService = new TestableAccessionService(sampleDao, sampleHumanDAO, externalReferenceDao, noteDao, dictionaryDao, patientIdentityDAO, patientIdentityTypeDAO, siteInformationDAO);
+        sample.setSampleSource(null);
+        Analysis analysis = (Analysis) ((SampleItem) sample.getSampleItems().toArray()[0]).getAnalyses().toArray()[0];
+        Result result = (Result) analysis.getResults().toArray()[0];
+        result.setResultSignatures(Collections.<ResultSignature>emptySet());
+        result.setValue("12.5");
+        result.setResultType("N");
+        analysis.setEnteredDate(null);
+        analysis.setReleasedDate(new java.sql.Date(new Date().getTime()));
+
+        when(sampleDao.getSamplesByEncounterUuid(sample.getUUID())).thenReturn(Arrays.asList(sample));
+        when(sampleDao.getSampleByAccessionNumber(anyString())).thenReturn(sample);
+        when(sampleHumanDAO.getPatientForSample(sample)).thenReturn(patient);
+        when(patientIdentityTypeDAO.getNamedIdentityType("ST")).thenReturn(patienIdentityType);
+        when(noteDao.getNoteByRefIAndRefTableAndSubject(anyString(), anyString(), anyString())).thenReturn(Collections.EMPTY_LIST);
+
+        AccessionDetail accessionDetail = accessionService.getAccessionDetailFor(sample.getUUID());
+
+        TestDetail testDetail = accessionDetail.getTestDetails().get(0);
+        assertEquals("12.5", testDetail.getResult());
+        assertNull(testDetail.getProviderUuid());
+        assertNotNull(testDetail.getDateTime());
+        assertNull(accessionDetail.getLabLocationUuid());
+    }
+
+    @Test
+    public void shouldSetResultValueForAlphanumeric() {
+        AccessionService accessionService = new TestableAccessionService(sampleDao, sampleHumanDAO, externalReferenceDao, noteDao, dictionaryDao, patientIdentityDAO, patientIdentityTypeDAO, siteInformationDAO);
+        TestDetail testDetail = new TestDetail();
+        Result result = new Result();
+        result.setValue("Positive");
+        result.setResultType("A");
+
+        accessionService.setResultValue(testDetail, result);
+
+        assertEquals("Positive", testDetail.getResult());
     }
 
     @Test

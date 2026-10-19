@@ -27,9 +27,14 @@ import java.util.Date;
 
 public class JsonTimeSerializer  extends JsonSerializer<Date> {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+    private static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     public void serialize(Date date, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeString(dateFormat.format(date));
+        if (date == null) {
+            gen.writeNull();
+            return;
+        }
+        // SimpleDateFormat is not thread-safe. Result feed reads happen concurrently in production.
+        gen.writeString(new SimpleDateFormat(PATTERN).format(date));
     }
 }
